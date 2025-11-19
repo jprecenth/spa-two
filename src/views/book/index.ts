@@ -18,7 +18,7 @@ export default function generatebook() {
     bookingContainer.classList.add("bookingContainer", "flex", "flex-row", "[&>*]:p-2","w-[80vw]","max-w-[1180px]", "justify-center", "mt-[10px]", "pb-[20px]");
     
     const calendarContainer = document.createElement("div");
-    calendarContainer.classList.add("calendarContainer", "w-[1/3]");
+    calendarContainer.classList.add("calendarContainer", "w-1/3");
     const calendar = BookingCalendar();
     calendarContainer.append(calendar);
     
@@ -51,7 +51,7 @@ export default function generatebook() {
     const sortBtn = document.createElement("button");
     sortBtn.textContent = "Sortera";
     sortBtn.classList.add("text-[12px]"); // "sortBtn", "max-h-fit",
-
+    
     filterBtm.append(dropDown, sortBtn);
     filterContainer.append(filterTop, filterBtm);
     
@@ -74,21 +74,21 @@ export default function generatebook() {
             box.style.backgroundColor = "var(--color-dark-white)";
         });
     };
-    
+    let sortedList = [...treatmentList]
     function aToO() {
-        treatmentList.sort((a, b) => a.name.localeCompare(b.name));
+        sortedList.sort((a, b) => a.name.localeCompare(b.name));
         checkoutList();
     }
     function oToA() {
-        treatmentList.sort((a, b) => b.name.localeCompare(a.name));
+        sortedList.sort((a, b) => b.name.localeCompare(a.name));
         checkoutList();
     }
     function highToLow() {
-        treatmentList.sort((a : any, b : any) => b.cost-a.cost);
+        sortedList.sort((a : any, b : any) => b.cost-a.cost);
         checkoutList();
     }
     function lowToHigh() {
-        treatmentList.sort((a : any, b: any) => (a.cost-b.cost));
+        sortedList.sort((a : any, b: any) => (a.cost-b.cost));
         checkoutList();
     }
     sortBtn.addEventListener("click", function() {
@@ -118,7 +118,7 @@ export default function generatebook() {
     filterTop.append(clearBtn);
     
     function filterTreatments(selectedType: string) {
-        const allBoxes = document.querySelectorAll<HTMLDivElement>(".treatmentBox");
+        const allBoxes = book.querySelectorAll<HTMLDivElement>(".treatmentBox");
         allBoxes.forEach((box) => {
             const types = box.dataset.type?.split(",");
             if (types?.includes(selectedType)) {
@@ -128,15 +128,16 @@ export default function generatebook() {
                 box.style.display = "none";
             }
         })
-        clearBtn.addEventListener("click", function() {
-            allBoxes.forEach(box => {
-                box.style.display = "flex";
-            })
-            for (let box of boxArray) {
-                box.style.backgroundColor = "";
-            }
-        })
     }
+    clearBtn.addEventListener("click", function() {
+        const allBoxes = document.querySelectorAll<HTMLDivElement>(".treatmentBox");
+        allBoxes.forEach(box => {
+            box.style.display = "flex";
+        })
+        for (let box of boxArray) {
+            box.style.backgroundColor = "";
+        }
+    })
     
     // ------------ Selection & Summary -------------- //
     const treatmentContainer = document.createElement("div");
@@ -149,17 +150,17 @@ export default function generatebook() {
     const totalContainer = document.createElement("div");
     const selectedTreatmentContainer = document.createElement("div");
     const selectedTreatmentHeader = document.createElement("p");
-    selectedTreatmentHeader.innerHTML = `<b>Vald behandling:<b>`;
+    selectedTreatmentHeader.innerHTML = `<b>Vald behandling:</b>`;
     const selectedUl = document.createElement("ul"); 
     selectedTreatmentContainer.prepend(selectedTreatmentHeader, selectedUl);
     const selectedDateContainer = document.createElement("div");
     selectedDateContainer.classList.add("mb-2", "text-sm", "selectedDateContainer", "mb-[20px]");
-    selectedDateContainer.innerHTML = `<hr>`;
     
     // element för datum och personalval
     const selDateEl = document.createElement("p");
     const selStaffEl = document.createElement("p");
-    selectedDateContainer.prepend(selDateEl, selStaffEl);
+    const hr = document.createElement("hr");
+    selectedDateContainer.prepend(hr, selDateEl, selStaffEl);
     
     let currentSelection: BookingSelection = {
         date: null,
@@ -185,7 +186,7 @@ export default function generatebook() {
     }
     
     totalContainer.classList.add("totalContainer", "inline-flex", "flex");
-    totalContainer.innerHTML = "Total kostnad:&nbsp";
+    totalContainer.textContent = "Total kostnad:\u00A0";
     const noCard = document.createElement("div");
     noCard.innerHTML = `
     <label class="text-sm">
@@ -194,6 +195,8 @@ export default function generatebook() {
     </label>`;
     
     summaryContainer.append(selectedTreatmentContainer, selectedDateContainer, totalContainer, noCard);
+    renderConfirmedPopup();
+    
     const cta = createButton({
         label: "Boka",
         variant: "primary",
@@ -204,11 +207,10 @@ export default function generatebook() {
             const { date, specialistName } = currentSelection;
             const selectedDate = currentSelection.date;
             
-            renderConfirmedPopup();
             showPopup();
             
             const confirmHeader = document.querySelector(".confirmHeader")!;
-            const chosenStaff = document.querySelector("chosenStaff") as HTMLElement;
+            const chosenStaff = document.querySelector(".chosenStaff") as HTMLElement;
             const chosenTreatment = document.querySelector(".chosenTreatment") as HTMLElement;
             const chosenDate = document.querySelector(".chosenDate") as HTMLElement;
             const confirmButton = document.querySelector(".confirmButton") as HTMLElement;
@@ -244,7 +246,7 @@ export default function generatebook() {
                 chosenDate.classList.remove("hidden");
                 chosenTreatment.classList.remove("hidden");
                 checkMark.classList.remove("hidden");
-                confirmHeader.innerHTML = `Bokning bekräftad!`;
+                confirmHeader.textContent = `Bokning bekräftad!`;
                 
                 const selectedTreatments = Array.from(document.querySelectorAll(".treatmentCheck:checked")).map(checkBox => checkBox.closest(".labelGroup")!.querySelector(".treatmentLabel")!.textContent);
                 const treatmentListString = selectedTreatments.join(", ");
@@ -266,13 +268,13 @@ export default function generatebook() {
     summaryContainer.append(cta);
     
     let totalNumber = document.createElement("p");
-    let cost: any = 0;
-    totalNumber.append(cost, ":-");
+    let cost = 0;
+    totalNumber.textContent = `${cost} :-`;
     totalNumber.classList.add("font-extrabold");
     
     function checkoutList() {
-        treatmentContainer.innerHTML = "";
-        for (const treatment of treatmentList) {
+        treatmentContainer.textContent = "";
+        for (const treatment of sortedList) {
             const treatmentCheck = document.createElement("input");
             treatmentCheck.setAttribute("type", "checkbox");
             treatmentCheck.classList.add("treatmentCheck", "w-[30px]", "ml-[-30px]");
@@ -290,10 +292,10 @@ export default function generatebook() {
                     selectedUl.removeChild(selectedLi);
                 }
                 if (selectedUl.children.length > 1) {
-                    selectedTreatmentHeader.innerHTML = `<b>Valda behandlingar:<b>`;   
+                    selectedTreatmentHeader.innerHTML = `<b>Valda behandlingar:</b>`;   
                 }
                 else {
-                    selectedTreatmentHeader.innerHTML = `<b>Vald behandling:<b>`;
+                    selectedTreatmentHeader.innerHTML = `<b>Vald behandling:</b>`;
                 }
             })
             

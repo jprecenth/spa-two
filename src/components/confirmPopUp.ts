@@ -1,6 +1,6 @@
 export function renderConfirmedPopup() {
   const popupHTML = `
-    <div id="confirmed-popup" class="fixed inset-0 items-center justify-center bg-black/40 hidden">
+    <div id="confirmed-popup" class="fixed flex inset-0 items-center justify-center bg-black/40 hidden">
       <div class="bg-gray-100 rounded-2xl shadow-lg p-8 h-fit w-84 text-center relative popupMain">
         <button onclick="closePopup()" class="absolute top-2 right-2 text-gray-500 hover:text-black">✕</button>
         <div class="text-green-600 text-4xl mb-2 checkMark">✔</div>
