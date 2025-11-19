@@ -1,5 +1,6 @@
 import Card from "../../components/reviewcard.ts";
 import { reviews } from "../../Lists.ts";
+import { createEmployeeOfXSection } from "../../components/EmployeeOfX.ts";
 
 export default function home() {
   const home = document.createElement("div");
@@ -63,5 +64,10 @@ export default function home() {
     card.classList.add("gap-2", "text-[13px]", "max-w-[230px]", "justify-between");
     
   })
+    // 1. Skapa elementet genom att anropa funktionen
+  const employeeSection = createEmployeeOfXSection();
+
+  // 2. Lägg till det i DOM-trädet (t.ex. sist i home-containern)
+  home.appendChild(employeeSection);
   return home;
 }
