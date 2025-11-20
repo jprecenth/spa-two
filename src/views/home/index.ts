@@ -1,11 +1,41 @@
-import Card from "../../components/reviewcard.ts";
-import { reviews } from "../../Lists.ts";
-import { createEmployeeOfXSection } from "../../components/EmployeeOfX.ts";
+import Card from '../../components/reviewcard.ts'
+import { reviews } from '../../Lists.ts'
+import { createEmployeeOfXSection } from '../../components/EmployeeOfX.ts'
+
+//importera fetchen
+import { getRaccoonImage } from '../../api.ts'
+
+const daily = await getRaccoonImage('daily')
+const hourly = await getRaccoonImage('hourly')
+const weekly = await getRaccoonImage('weekly')
+
+//skriv såhär för att få url
+console.log('Daily:', daily.data?.url)
+
+//det här returnerar ett objekt med success och data
+console.log('Hourly:', hourly)
+console.log('Weekly:', weekly)
 
 export default function home() {
-  const home = document.createElement("div");
-  home.classList.add("home", "flex", "items-center", "flex-col", "bg-light-blue", "p-standard", "rounded-standard", "drop-shadow-standard", "self-center", "w-[90vw]", "max-w-[1200px]", "h-[70vh]", "overflow-y-auto", "overflow-x-hidden", "scrollbar");
-  home.innerHTML = `
+    const home = document.createElement('div')
+    home.classList.add(
+        'home',
+        'flex',
+        'items-center',
+        'flex-col',
+        'bg-light-blue',
+        'p-standard',
+        'rounded-standard',
+        'drop-shadow-standard',
+        'self-center',
+        'w-[90vw]',
+        'max-w-[1200px]',
+        'h-[70vh]',
+        'overflow-y-auto',
+        'overflow-x-hidden',
+        'scrollbar'
+    )
+    home.innerHTML = `
       <div class="bg-white/75 flex items-center flex-col p-7 rounded-standard">
     <p class="text-lg text-center font-medium">Välkommen till <span class="font-one font-extrabold uppercase">Washbear Spa</span>, vårt avslappnade paradis i Björnlunda, precis utanför Gnesta.<br>
         <span class="text-base">Varför inte boka din spa-upplevelse hos oss redan idag!</span>
@@ -27,47 +57,57 @@ export default function home() {
     </div>
 </div>
 <button onClick="location.href='book'" class="frontCTA m-standard text-xl">Boka nu!</button>
-  
+
 <section class='testimonials flex flex-col items-center max-w-full ml-5 mr-5 mb-5'>
     <p class="text-sm m-1">Hör vad våra nöjda kunder har att säga!</p>
 </section>
-    `;
-  
-  
-  const carouselContainer = document.createElement("div");
-  carouselContainer.classList.add(
-    "carousel-container", "w-7/8", "[mask-image:linear-gradient(to_right,_transparent,_black_6%,_black_94%,_transparent)]" 
-  );
-  const carouselTrack = document.createElement("div");
-  carouselTrack.classList.add(
-    "carousel-track", "inline-flex", "animate-[carouselAnimation_30s_linear_infinite_alternate-reverse]", "relative", "*:m-[5px]", "*:rounded-2xl"
-  );
-  
-  let count = 0;
-  
-  reviews.forEach((review) => {
-    if (review.rating == 5 && count < 7) {
-      const card = Card(review);
-      carouselTrack.append(card);
-      count++;
-    }
-  });
-  
-  home.querySelector(".testimonials")!.append(carouselContainer);
-  home.querySelector(".carousel-container")!.append(carouselTrack);
-  home.querySelectorAll(".mt-auto").forEach(p => {
-    p.classList.remove("mt-auto");
-    p.classList.add("mt-[1px]");
-  });
-  home.querySelectorAll(".card").forEach(card => {
-    card.classList.remove("gap-4");
-    card.classList.add("gap-2", "text-[13px]", "max-w-[230px]", "justify-between");
-    
-  })
-    // 1. Skapa elementet genom att anropa funktionen
-  const employeeSection = createEmployeeOfXSection();
+    `
 
-  // 2. Lägg till det i DOM-trädet (t.ex. sist i home-containern)
-  home.appendChild(employeeSection);
-  return home;
+    const carouselContainer = document.createElement('div')
+    carouselContainer.classList.add(
+        'carousel-container',
+        'w-7/8',
+        '[mask-image:linear-gradient(to_right,_transparent,_black_6%,_black_94%,_transparent)]'
+    )
+    const carouselTrack = document.createElement('div')
+    carouselTrack.classList.add(
+        'carousel-track',
+        'inline-flex',
+        'animate-[carouselAnimation_30s_linear_infinite_alternate-reverse]',
+        'relative',
+        '*:m-[5px]',
+        '*:rounded-2xl'
+    )
+
+    let count = 0
+
+    reviews.forEach((review) => {
+        if (review.rating == 5 && count < 7) {
+            const card = Card(review)
+            carouselTrack.append(card)
+            count++
+        }
+    })
+
+    home.querySelector('.testimonials')!.append(carouselContainer)
+    home.querySelector('.carousel-container')!.append(carouselTrack)
+    home.querySelectorAll('.mt-auto').forEach((p) => {
+        p.classList.remove('mt-auto')
+        p.classList.add('mt-[1px]')
+    })
+    home.querySelectorAll('.card').forEach((card) => {
+        card.classList.remove('gap-4')
+        card.classList.add(
+            'gap-2',
+            'text-[13px]',
+            'max-w-[230px]',
+            'justify-between'
+        )
+    })
+    // 1. Skapa elementet genom att anropa funktionen
+    const employeeSection = createEmployeeOfXSection()
+
+    // 2. Lägg till det i DOM-trädet (t.ex. sist i home-containern)
+    home.appendChild(employeeSection)
+    return home
 }

@@ -1,38 +1,29 @@
 const BASE_URL = 'https://api.racc.lol/raccoon'
 
-console.log('hej')
+interface RaccoonImage {
+    url: string
+    size: number
+    contentType: string
+}
 
 type ApiResponse<T> = {
-  data: T | undefined
-  error: string | null
+    success: boolean
+    data?: T
 }
 
-interface daily {
-  url: string
-  size: number
-  contentType: string
-}
+export const getRaccoonImage = async (
+    type: 'daily' | 'hourly' | 'weekly'
+): Promise<ApiResponse<RaccoonImage>> => {
+    try {
+        const res = await fetch(`${BASE_URL}?${type}=true&json=true`)
 
-type DailyResponse = ApiResponse<daily[]>
+        if (!res.ok) {
+            return { success: false, data: undefined }
+        }
 
-const getDaily = (): Promise<DailyResponse> => {
-  return fetch(`${BASE_URL}?daily=true`).then((res) => res.json()).then((data) => ({
-    data,
-    error: null
-  })).catch((error) => ({
-    data: undefined,
-    error
-  }))
-
-}
-export default getDaily
-
-const {data} = await getDaily()
-
-if (data) {
-  console.log(data);
-  
-} else {
-  console.log('no data');
-  
+        return (await res.json()) as ApiResponse<RaccoonImage>
+    } catch (error) {
+        console.error('Failed to fetch raccoon image:', error)
+        return { success: false }
+    }
 }
