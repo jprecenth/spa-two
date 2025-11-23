@@ -50,7 +50,7 @@ export default function staffView() {
     container.appendChild(card);
   });
   
-    const bottomSection = document.createElement("div");
+  const bottomSection = document.createElement("div");
   bottomSection.classList.add(
     "flex",
     "items-center",

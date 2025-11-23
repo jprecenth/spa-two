@@ -1,7 +1,7 @@
 import { treatmentList, treatmentTypes, sortOptions } from "../../Lists";
-import { createButton } from "../../components/button";
 import { renderConfirmedPopup, showPopup} from "../../components/confirmPopUp";
 import BookingCalendar from "../../components/BookingCalendar";
+import createButton from "../../components/button";
 
 type BookingSelection = {
     date: string | null;
