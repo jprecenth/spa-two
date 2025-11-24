@@ -1,7 +1,13 @@
+import { getRaccoonImage } from "../api.ts";
 /**
  * Skapar en sektion som visar "Employee of X"-kort.
  * Använder ren DOM-manipulation utan innerHTML för bättre struktur.
  */
+
+const daily = await getRaccoonImage("daily");
+const hourly = await getRaccoonImage("hourly");
+const weekly = await getRaccoonImage("weekly");
+
 export function createEmployeeOfXSection(): HTMLElement {
   // 1. Skapa wrappern
   const section = document.createElement("section");
@@ -18,18 +24,18 @@ export function createEmployeeOfXSection(): HTMLElement {
   // Data för korten för att undvika kodupprepning
   const employees = [
     {
-      src: "https://api.racc.lol/raccoon?hourly=true",
-      title: "Timmens Arbetare är Raccoon",
+      src: daily.data?.url,
+      title: "Timmes arbetare är Raccoon",
       desc: "Specialist på 'Deep Clean'. Råkade tvätta tre kunders mobiltelefoner i tron att de var musslor, men handdukarna har aldrig varit renare.",
     },
     {
-      src: "https://api.racc.lol/raccoon?daily=true",
-      title: "Dagens Arbetare är Raccoon",
+      src: hourly.data?.url,
+      title: "Dagliga arbetare är Raccoon",
       desc: "Ansvarig för gurkmasker. Har tyvärr ätit upp alla gurkskivor som skulle ligga på dina ögon, men erbjuder utmärkt 'knådnings-massage' med små klor.",
     },
     {
-      src: "https://api.racc.lol/raccoon?weekly=true",
-      title: "Veckans Arbetare är Raccoon",
+      src: weekly.data?.url,
+      title: "Veckliga arbetare är Raccoon",
       desc: "Head of Lerbad. Hävdar bestämt att leran från diket bakom pizzerian har bäst mineraler. Tar betalt i glittrande föremål.",
     },
   ];
@@ -51,7 +57,7 @@ export function createEmployeeOfXSection(): HTMLElement {
     );
 
     const img = document.createElement("img");
-    img.src = emp.src;
+    img.src = String(emp.src);
     img.alt = "Raccoon employee";
     img.classList.add("w-32", "h-32", "rounded-full", "object-cover", "mb-3");
 
@@ -74,3 +80,4 @@ export function createEmployeeOfXSection(): HTMLElement {
 
   return section;
 }
+console.log(String(daily.data?.url));

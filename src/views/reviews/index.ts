@@ -16,9 +16,9 @@ export default function testimonials() {
     <p>
         Kolla hur nöjda våra kunder är!
     </p>
-  
+
   `;
-  
+
   const reviewContainer = document.createElement("div");
   reviewContainer.classList.add(
     "grid",
@@ -28,40 +28,40 @@ export default function testimonials() {
     "lg:grid-cols-3",
     "mb-4"
   );
-  
-  
+
+
   let cardAmount = 0;
   reviews.forEach((review) => {
-    
-    if (cardAmount < 9) { 
+
+    if (cardAmount < 9) {
       const card = Card(review);
       reviewContainer.append(card);
       cardAmount++;
     }
   });
-  
-  
-  
+
+
+
   // Bottom Section Here <3 //
   const inputContainer = document.createElement("div");
   inputContainer.classList.add(
     "flex",
     "items-center",
-    "justify-center", 
+    "justify-center",
     "mb-4"
   );
-  
+
   inputContainer.classList.add("flex", "gap-4", "mt-4");
-  
+
   const addReviewButton = document.createElement("button");
   addReviewButton.textContent = "Lägg till omdöme";
-  
+
   const clearStateButton = document.createElement("button");
   clearStateButton.textContent = "Rensa state";
-  
+
   inputContainer.append(addReviewButton, clearStateButton);
   testimonials.append(inputContainer);
-  
+
   ////////////////////////////////////////////  Skapa en dold modal/ruta
   const modal = document.createElement("div");
   modal.classList.add(
@@ -75,7 +75,7 @@ export default function testimonials() {
     "justify-center",
     "hidden"
   );
-  
+
   const modalContent = document.createElement("div");
   modalContent.classList.add(
     "bg-white",
@@ -109,21 +109,21 @@ export default function testimonials() {
   const nameContainer = document.createElement("div");
   nameContainer.append(nameLabel, inputName);
   nameContainer.classList.add("flex", "flex-col");
-  
+
   const draftBox = document.createElement("input");
   draftBox.type = "checkbox";
   draftBox.checked = saveDraft;
   
   draftBox.addEventListener("change", () => {
     saveDraft = draftBox.checked;
-    
+
     if (!saveDraft) {
       draftText = "";
     }
   })
   
   inputField.value = draftText;
-  
+
   const draftContainer = document.createElement("div");
   draftContainer.classList.add("flex", "flex-row", "justify-end");
   draftContainer.append(draftLabel, draftBox);
@@ -168,7 +168,7 @@ export default function testimonials() {
     "rounded",
     "mt-4"
   );
-  
+
   const cancelButton = document.createElement("button");
   cancelButton.textContent = "Avbryt";
   cancelButton.classList.add(
@@ -188,13 +188,13 @@ export default function testimonials() {
   modalContent.append(modalTitle, inputField, draftContainer, ratingContainer, nameContainer, buttonContainer);
   modal.append(modalContent);
   testimonials.append(modal);
-  
+
   inputField.addEventListener("input", () => {
     if (draftBox.checked) {
       draftText = inputField.value;
     }
   });
-  
+
   // Event listeners
   addReviewButton.addEventListener("click", () => {
     
@@ -225,22 +225,18 @@ export default function testimonials() {
     
     modal.classList.add("hidden");
   });
-  
+
   //Cancel button
   cancelButton.addEventListener("click", () => {
     modal.classList.add("hidden");
   });
-  
+
   //Clear the state of draft
   clearStateButton.addEventListener("click", () => {
     localStorage.removeItem("reviewDraft")
   });
-  
+
   testimonials.append(inputContainer, reviewContainer);
-  
+
   return testimonials;
 }
-
-
-
-
