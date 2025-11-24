@@ -24,7 +24,7 @@ type ToggleButton = HTMLButtonElement & { //& sammansätter två typer till en. 
 };
 
 
-export function createButton({
+export default function createButton({
   label = "Click me",
   labelPrimary = null,
   labelSecondary = null,
