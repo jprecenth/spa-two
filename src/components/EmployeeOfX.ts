@@ -19,17 +19,17 @@ export function createEmployeeOfXSection(): HTMLElement {
   const employees = [
     {
       src: "https://api.racc.lol/raccoon?hourly=true",
-      title: "Timmes arbetare är Raccoon",
+      title: "Timmens Arbetare är Raccoon",
       desc: "Specialist på 'Deep Clean'. Råkade tvätta tre kunders mobiltelefoner i tron att de var musslor, men handdukarna har aldrig varit renare.",
     },
     {
       src: "https://api.racc.lol/raccoon?daily=true",
-      title: "Dagliga arbetare är Raccoon",
+      title: "Dagens Arbetare är Raccoon",
       desc: "Ansvarig för gurkmasker. Har tyvärr ätit upp alla gurkskivor som skulle ligga på dina ögon, men erbjuder utmärkt 'knådnings-massage' med små klor.",
     },
     {
       src: "https://api.racc.lol/raccoon?weekly=true",
-      title: "Veckliga arbetare är Raccoon",
+      title: "Veckans Arbetare är Raccoon",
       desc: "Head of Lerbad. Hävdar bestämt att leran från diket bakom pizzerian har bäst mineraler. Tar betalt i glittrande föremål.",
     },
   ];

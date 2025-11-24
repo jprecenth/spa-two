@@ -18,7 +18,7 @@ export default function generatebook() {
     bookingContainer.classList.add("bookingContainer", "flex", "flex-row", "[&>*]:p-2","w-[80vw]","max-w-[1180px]", "justify-center", "mt-[10px]", "pb-[20px]");
     
     const calendarContainer = document.createElement("div");
-    calendarContainer.classList.add("calendarContainer", "w-1/3");
+    calendarContainer.classList.add("calendarContainer");
     const calendar = BookingCalendar();
     calendarContainer.append(calendar);
     
