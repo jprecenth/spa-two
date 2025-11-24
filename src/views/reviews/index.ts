@@ -2,8 +2,8 @@ import { reviews } from '../../Lists.ts'
 import Card from '../../components/reviewcard'
 
 export default function testimonials() {
-    const testimonials = document.createElement('main')
-    testimonials.classList.add(
+    const testimonialsSection = document.createElement('main')
+    testimonialsSection.classList.add(
         'Recenssioner',
         'flex',
         'items-center',
@@ -20,7 +20,7 @@ export default function testimonials() {
         'overflow-x-hidden',
         'scrollbar'
     )
-    testimonials.innerHTML = `
+    testimonialsSection.innerHTML = `
     <h1 class="font-one">Recensioner</h1>
     <h2>Vi vill alltid att du ska gå ut med ett leende!</h2>
     <p>
@@ -38,13 +38,14 @@ export default function testimonials() {
         'lg:grid-cols-3'
     )
 
-    reviews.forEach((review) => {
+    /*    reviews.forEach((review) => {
         const card = Card(review)
         reviewContainer.append(card)
     })
-
-    testimonials.append(reviewContainer)
+ */
+    reviewContainer.append(...reviews.map(Card))
+    testimonialsSection.append(reviewContainer)
 
     // i slutändan returneras elementet som skapades med document.createElement("div")
-    return testimonials
+    return testimonialsSection
 }
