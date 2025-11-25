@@ -1,5 +1,4 @@
 import { reviews } from "../../Lists.ts";
-import { makeIcon } from "../../components/icon.ts";
 import Card from "../../components/reviewcard";
 
 let draftText = "";
@@ -14,11 +13,10 @@ export default function testimonials() {
     <h1 class="font-one">Recensioner</h1>
     <h2>Vi vill alltid att du ska gå ut med ett leende!</h2>
     <p>
-        Kolla hur nöjda våra kunder är!
+      Kolla hur nöjda våra kunder är!
     </p>
-
   `;
-
+  
   const reviewContainer = document.createElement("div");
   reviewContainer.classList.add(
     "grid",
@@ -28,20 +26,17 @@ export default function testimonials() {
     "lg:grid-cols-3",
     "mb-4"
   );
-
-
+  
   let cardAmount = 0;
   reviews.forEach((review) => {
-
+    
     if (cardAmount < 9) {
       const card = Card(review);
       reviewContainer.append(card);
       cardAmount++;
     }
   });
-
-
-
+  
   // Bottom Section Here <3 //
   const inputContainer = document.createElement("div");
   inputContainer.classList.add(
@@ -50,18 +45,18 @@ export default function testimonials() {
     "justify-center",
     "mb-4"
   );
-
+  
   inputContainer.classList.add("flex", "gap-4", "mt-4");
-
+  
   const addReviewButton = document.createElement("button");
   addReviewButton.textContent = "Lägg till omdöme";
-
+  
   const clearStateButton = document.createElement("button");
   clearStateButton.textContent = "Rensa state";
-
+  
   inputContainer.append(addReviewButton, clearStateButton);
   testimonials.append(inputContainer);
-
+  
   ////////////////////////////////////////////  Skapa en dold modal/ruta
   const modal = document.createElement("div");
   modal.classList.add(
@@ -75,7 +70,7 @@ export default function testimonials() {
     "justify-center",
     "hidden"
   );
-
+  
   const modalContent = document.createElement("div");
   modalContent.classList.add(
     "bg-white",
@@ -109,21 +104,21 @@ export default function testimonials() {
   const nameContainer = document.createElement("div");
   nameContainer.append(nameLabel, inputName);
   nameContainer.classList.add("flex", "flex-col");
-
+  
   const draftBox = document.createElement("input");
   draftBox.type = "checkbox";
   draftBox.checked = saveDraft;
   
   draftBox.addEventListener("change", () => {
     saveDraft = draftBox.checked;
-
+    
     if (!saveDraft) {
       draftText = "";
     }
   })
   
   inputField.value = draftText;
-
+  
   const draftContainer = document.createElement("div");
   draftContainer.classList.add("flex", "flex-row", "justify-end");
   draftContainer.append(draftLabel, draftBox);
@@ -138,6 +133,18 @@ export default function testimonials() {
   iconContainer.classList.add("flex", "align-center", "justify-center", "iconContainer");
   let times = 0;
   
+  const cancelButton = document.createElement("button");
+  cancelButton.textContent = "Avbryt";
+  cancelButton.classList.add(
+    "bg-light-orange",
+    "hover:bg-orange-200",
+    "text-black",
+    "px-4",
+    "py-2",
+    "rounded",
+    "mt-4"
+  );
+  
   while (times < 5) {
     let starEl = document.createElement("span");
     starEl.classList.add("starEl", "starIcon", "text-2xl",  "text-orange-300", "text-shadow-sm/40", "mr-2", "hover:cursor-pointer", "w-[20px]", "text-center");
@@ -145,35 +152,49 @@ export default function testimonials() {
     const index = times + 1;
     starEl.setAttribute("title", `Betygsätt ${index}`);
     
+    let selected = false;
+    
+    starEl.addEventListener("click", () => {
+      selected = !selected;
+      if (selected) {
+        starEl.textContent = `${index}`;
+        starEl.classList.remove("text-shadow-sm/40");
+        starEl.classList.add("text-shadow-sm/80");
+      }
+      else {
+        starEl.textContent = "☆";
+        starEl.classList.add("text-shadow-sm/40");
+        starEl.classList.remove("text-shadow-sm/80");
+      };
+    });
+    
     starEl.addEventListener("mouseenter", () => {
-      starEl.textContent = `${index}`;
+      if (!selected) {
+        starEl.textContent = `${index}`;
+      }
     });
+    
     starEl.addEventListener("mouseleave", () => {
-      starEl.textContent = "☆";
+      if (!selected) {
+        starEl.textContent = "☆";
+      }
     });
+    
+    cancelButton.addEventListener("click", () => {
+      selected = false;
+      starEl.textContent = "☆";
+    })
+    
     iconContainer.append(starEl);
     times++
   }
-
   
   ratingContainer.append(starLabel, iconContainer);
   const submitButton = document.createElement("button");
   submitButton.textContent = "Skicka in";
   submitButton.classList.add(
     "bg-light-green",
-    "hover:bg-light-white",
-    "text-black",
-    "px-4",
-    "py-2",
-    "rounded",
-    "mt-4"
-  );
-
-  const cancelButton = document.createElement("button");
-  cancelButton.textContent = "Avbryt";
-  cancelButton.classList.add(
-    "bg-light-orange",
-    "hover:bg-dark-orange",
+    "hover:bg-green-200",
     "text-black",
     "px-4",
     "py-2",
@@ -188,13 +209,13 @@ export default function testimonials() {
   modalContent.append(modalTitle, inputField, draftContainer, ratingContainer, nameContainer, buttonContainer);
   modal.append(modalContent);
   testimonials.append(modal);
-
+  
   inputField.addEventListener("input", () => {
     if (draftBox.checked) {
       draftText = inputField.value;
     }
   });
-
+  
   // Event listeners
   addReviewButton.addEventListener("click", () => {
     
@@ -225,18 +246,20 @@ export default function testimonials() {
     
     modal.classList.add("hidden");
   });
-
+  
   //Cancel button
   cancelButton.addEventListener("click", () => {
     modal.classList.add("hidden");
   });
-
+  
   //Clear the state of draft
   clearStateButton.addEventListener("click", () => {
     localStorage.removeItem("reviewDraft")
+    draftBox.checked = false;
+    saveDraft = false;
   });
-
+  
   testimonials.append(inputContainer, reviewContainer);
-
+  
   return testimonials;
 }

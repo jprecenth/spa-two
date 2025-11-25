@@ -51,7 +51,7 @@ export default function BookingCalendar(): BookingCalendarElement {
   // Root-node som kapslar in hela komponenten
   const root = document.createElement("section") as BookingCalendarElement;
   root.className = 
-    "rounded-2xl bg-slate-100 p-4 shadow-sm border border-slate-200 w-[fit-content]";
+    "rounded-2xl bg-blue-100 p-4 shadow-sm border border-slate-200 w-[fit-content]";
   
   //Grund-HTML för att omsluta elementern innuti såsom kalendern och personal
   root.innerHTML = `

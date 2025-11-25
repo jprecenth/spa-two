@@ -52,7 +52,7 @@ export default function home() {
   const carouselContainer = document.createElement("div");
   carouselContainer.classList.add(
     "carousel-container",
-    "w-7/8",
+    "w-8/8",
     "[mask-image:linear-gradient(to_right,_transparent,_black_6%,_black_94%,_transparent)]"
   );
   const carouselTrack = document.createElement("div");
