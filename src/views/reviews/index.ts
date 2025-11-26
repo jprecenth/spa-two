@@ -1,6 +1,5 @@
 import { reviews } from "../../Lists.ts";
 import Card from "../../components/reviewcard";
-import { addReview } from "../../components/addReview.ts";
 
 let draftText = "";
 let saveDraft = false;
@@ -193,10 +192,8 @@ export default function testimonials() {
   
    submitButton.addEventListener("click", () => {
 
-    const name = inputName.value.trim();
-    const text = inputField.value.trim();
-
-    addReview(name, text, 5)
+    const name = inputName.value;
+    const text = inputField.value;
 
     const newCard = Card({ name, text, rating: 5 });
     newCard.classList.add("user-review-card");
@@ -242,7 +239,7 @@ export default function testimonials() {
     modal.classList.add("hidden");
   });
   
-  //Clear the state of draft and new reviews
+  //Clearing the state of draft and new reviews
   clearStateButton.addEventListener("click", () => {
     localStorage.removeItem("userReviews");
     localStorage.removeItem("reviewDraft")
