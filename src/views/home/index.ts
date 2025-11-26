@@ -1,6 +1,5 @@
 import Card from "../../components/reviewcard.ts";
 import { reviews } from "../../Lists.ts";
-import { createEmployeeOfXSection } from "../../components/EmployeeOfX.ts";
 
 export default function home() {
   const home = document.createElement("div");
@@ -43,12 +42,12 @@ export default function home() {
     </div>
 </div>
 <button onClick="location.href='book'" class="frontCTA m-standard text-xl">Boka nu!</button>
-
+  
 <section class='testimonials flex flex-col items-center max-w-full ml-5 mr-5 mb-5'>
     <p class="text-sm m-1">Hör vad våra nöjda kunder har att säga!</p>
 </section>
     `;
-
+  
   const carouselContainer = document.createElement("div");
   carouselContainer.classList.add(
     "carousel-container",
@@ -64,9 +63,9 @@ export default function home() {
     "*:m-[5px]",
     "*:rounded-2xl"
   );
-
+  
   let count = 0;
-
+  
   reviews.forEach((review) => {
     if (review.rating == 5 && count < 7) {
       const card = Card(review);
@@ -74,7 +73,7 @@ export default function home() {
       count++;
     }
   });
-
+  
   home.querySelector(".testimonials")!.append(carouselContainer);
   home.querySelector(".carousel-container")!.append(carouselTrack);
   home.querySelectorAll(".mt-auto").forEach((p) => {
@@ -90,10 +89,6 @@ export default function home() {
       "justify-between"
     );
   });
-  // 1. Skapa elementet genom att anropa funktionen
-  const employeeSection = createEmployeeOfXSection();
 
-  // 2. Lägg till det i DOM-trädet (t.ex. sist i home-containern)
-  home.appendChild(employeeSection);
   return home;
 }
