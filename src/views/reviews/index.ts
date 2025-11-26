@@ -4,13 +4,11 @@ import Card from "../../components/reviewcard";
 let draftText = "";
 let saveDraft = false;
 
-export interface Review {
-  name: string;
-  text: string;
-  rating: 1 | 2 | 3 | 4 | 5;
+interface UserReview {
+name: string;
+text: string;
+rating: 1 | 2 | 3 | 4 | 5;
 }
-
-
 
 export default function testimonials() {
   //getDaily().then((data) => console.log(data))
@@ -34,12 +32,11 @@ export default function testimonials() {
     "lg:grid-cols-3",
   );
   
-   // reviews från användaren högst upp i listan 
+   // hämtar reviews från användaren i local storage
    const savedReviews = JSON.parse(localStorage.getItem("userReviews") || "[]"); 
-    savedReviews.forEach((review: Review) => {
+    savedReviews.forEach((review: UserReview) => {
       const card = Card(review);
       card.classList.add("user-review-card");
-      reviewContainer.prepend(card); 
     });
   
   // laddar reviews från Lists.ts
@@ -52,8 +49,6 @@ export default function testimonials() {
       cardAmount++;
     }
   });
-  
-  
   
   // Bottom Section Here <3 //
   const inputContainer = document.createElement("div");
@@ -201,29 +196,9 @@ export default function testimonials() {
 
     localStorage.removeItem("reviewDraft")
 
-    modal.classList.add("hidden");
+    modal.classList.add("hidden"); //modalen försvinner
   });
   
-// submitButton.addEventListener("click", () => {
-//   const name = inputName.value.trim();
-//   const text = inputField.value.trim();
-
-//   addReview(name, text, 5);
-
-//   const newCard = Card({ name, text, rating: 5 });
-
-//   // MARKERA KORTET SOM USER-GENERATED
-//   newCard.classList.add("user-review-card");
-
-//   reviewContainer.prepend(newCard);
-
-//   localStorage.removeItem("reviewDraft");
-
-//   modal.classList.add("hidden");
-// });
-
-
-
   //Cancel button
   cancelButton.addEventListener("click", () => {
 
@@ -241,10 +216,8 @@ export default function testimonials() {
   
   //Clearing the state of draft and new reviews
   clearStateButton.addEventListener("click", () => {
-    localStorage.removeItem("userReviews");
-    localStorage.removeItem("reviewDraft")
-    localStorage.removeItem("user-addReview")
 
+    localStorage.removeItem("reviewDraft")
     document.querySelectorAll(".user-review-card").forEach(el => el.remove());
   });
   
@@ -252,7 +225,6 @@ export default function testimonials() {
   
   return testimonials;
 }
-
 
 
 
