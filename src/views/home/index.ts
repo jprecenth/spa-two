@@ -5,20 +5,23 @@ export default function home() {
   const home = document.createElement("div");
   home.classList.add(
     "home",
-    "flex",
-    "items-center",
-    "flex-col",
+    "overflow-y-auto",
+    "overflow-x-hidden",
+    
     "bg-light-blue",
     "p-standard",
     "rounded-standard",
     "drop-shadow-standard",
-    "self-center",
-    "w-[90vw]",
+    
+    "w-full",
     "max-w-[1200px]",
-    "h-[70vh]",
-    "overflow-y-auto",
-    "overflow-x-hidden",
-    "scrollbar"
+    "scrollbar",
+    "mx-auto",
+
+    "flex",
+    "flex-col",
+    "items-center",
+    "justify-start"
   );
   home.innerHTML = `
       <div class="bg-white/75 flex items-center flex-col p-7 rounded-standard">
@@ -89,6 +92,6 @@ export default function home() {
       "justify-between"
     );
   });
-
+  
   return home;
 }

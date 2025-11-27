@@ -1,6 +1,5 @@
 import { reviews } from "../../Lists.ts";
 import Card from "../../components/reviewcard";
-import createButton from "../../components/button.ts"
 
 let draftText = "";
 let saveDraft = false;
@@ -13,7 +12,26 @@ interface UserReview {
 
 export default function testimonials() {
   const testimonials = document.createElement("main");
-  testimonials.classList.add("Recenssioner", "flex", "items-center", "flex-col", "bg-light-blue", "p-standard", "rounded-standard", "drop-shadow-standard", "self-center", "w-[90vw]", "max-w-[1200px]", "h-[70vh]", "overflow-y-auto", "overflow-x-hidden", "scrollbar");
+  testimonials.classList.add(
+    "home",
+    "overflow-y-auto",
+    "overflow-x-hidden",
+    
+    "bg-light-blue",
+    "p-standard",
+    "rounded-standard",
+    "drop-shadow-standard",
+    
+    "w-full",
+    "max-w-[1200px]",
+    "scrollbar",
+    "mx-auto",
+    
+    "flex",
+    "flex-col",
+    "items-center",
+    "justify-start"
+  );
   testimonials.innerHTML = `
     <h1 class="font-one">Recensioner</h1>
     <h2>Vi vill alltid att du ska gå ut med ett leende!</h2>
@@ -21,7 +39,6 @@ export default function testimonials() {
       Kolla hur nöjda våra kunder är!
     </p>
   `;
-  
   const reviewContainer = document.createElement("div");
   reviewContainer.classList.add(
     "grid",
@@ -32,13 +49,16 @@ export default function testimonials() {
     "mb-4"
   );
   
-  // hämtar reviews från användaren i local storage
+  // SPARADE OMDÖMEN //
+  // ☆ Hämtar reviews från localStorage
   const savedReviews = JSON.parse(localStorage.getItem("userReviews") || "[]"); 
   savedReviews.forEach((review: UserReview) => {
     const card = Card(review);
     card.classList.add("user-review-card");
   });
   
+  // SKAPA REVIEW-CARDS //
+  // ☆ Skapa kort för omdömen i reviews-arrayen, men bara 9 stycken
   let cardAmount = 0;
   reviews.forEach((review) => {
     
@@ -57,7 +77,6 @@ export default function testimonials() {
     "justify-center",
     "mb-4"
   );
-  
   inputContainer.classList.add("flex", "gap-4", "mt-4");
   
   const addReviewButton = document.createElement("button");
@@ -65,24 +84,11 @@ export default function testimonials() {
   
   const clearStateButton = document.createElement("button");
   clearStateButton.textContent = "Rensa state";
-   //SÅ LÄGGER DU TILL KNAPPEN
-
-  //DETTA SKAPAR KNAPPEN
+  
   inputContainer.append(addReviewButton, clearStateButton);
   testimonials.append(inputContainer);
-  const testButton = createButton({
-    label: "test",
-    variant: "cancel",
-    className: "px-4",
-    onClick: () => {
-      
-    }
-  });
-  //DETTA RENDERAR KNAPPEN, aka säger vart den ska vara
-  testimonials.append(testButton);
-
-
-  // MODAL //
+  
+  // MODAL-ELEMENT //
   const modal = document.createElement("div");
   modal.classList.add(
     "fixed",
@@ -110,25 +116,32 @@ export default function testimonials() {
   modalTitle.textContent = "Skriv en recension";
   modalTitle.classList.add("font-one", "text-3xl", "text-center", "mb-5");
   
-  const inputField = document.createElement("input");
-  inputField.type  = "text";
+  // Inputfält till formuläret:
+  const inputField = document.createElement("textarea");
   inputField.name = "Omdöme";
-  inputField.id = "Omdöme";
+  // ☆ "required" gör fältet obligatoriskt för att skicka in formuläret
   inputField.required = true;
-  inputField.classList.add("w-full", "border", "p-2", "h-[120px]");
+  // ☆ "maxLength" sätter character limits för att begränsa mängden text
+  inputField.maxLength = 150;
+  inputField.classList.add("w-full", "border", "p-2", "h-[120px]", "resize-none", "overflow-y-auto");
+  // ☆ setAttribute placeholder ger en text i fältet innan input 
   inputField.setAttribute("placeholder","Berätta om din spa-upplevelse!")
+  // ☆ "setCustomValidity" ger en anpassad varning utanför fältet
   inputField.setCustomValidity("Du måste skriva något för att lägga till ett omdöme.");
+  // ☆ Wanted behavior: ingen input > ge varning; faktisk input > ingen varning, 
+  // eventlistener nollställer customvalidity varning efter något har skrivits
   inputField.addEventListener("input", () => {
     inputField.setCustomValidity("");
   })
   
-  const inputName = document.createElement("input");
-  inputName.setAttribute("type", "text");
-  inputName.classList.add("border", "p-2", "h-[40px]", "resize-none");
+  // ☆ Samma som inputField-elementet ovan
+  const inputName = document.createElement("textarea");
+  inputName.classList.add("border", "p-2", "h-[42px]", "resize-none");
   inputName.setAttribute("placeholder","Skriv ditt namn");
   inputName.required = true;
   inputName.id = "Namn";
   inputName.name = "Namn";
+  inputName.maxLength = 20;
   inputName.setCustomValidity("Du måste skriva ett namn för att lägga till ett omdöme.");
   inputName.addEventListener("input", () => {
     inputName.setCustomValidity("");
@@ -137,13 +150,14 @@ export default function testimonials() {
   const nameLabel = document.createElement("label");
   nameLabel.classList.add("font-medium");
   nameLabel.textContent = "Namn:"; 
+  // ☆ htmlFor parar ihop nameLabel med inputName vars name är "Namn"
   nameLabel.htmlFor = "Namn";
   
   const nameContainer = document.createElement("div");
-  nameContainer.append(nameLabel, inputName);
   nameContainer.classList.add("flex", "flex-col");
+  nameContainer.append(nameLabel, inputName);
   
-  // SPARA UTKAST-CONTAINERN //
+  // UTKAST-CONTAINERN //
   const draftBox = document.createElement("input");
   draftBox.type = "checkbox";
   draftBox.checked = saveDraft;
@@ -156,9 +170,9 @@ export default function testimonials() {
   
   const form = document.createElement("form");
   
+  // ☆ När checkboxen för utkast inte är icheckad, rensa draftText
   draftBox.addEventListener("change", () => {
     saveDraft = draftBox.checked;
-    
     if (!saveDraft) {
       draftText = "";
     }
@@ -178,7 +192,6 @@ export default function testimonials() {
   
   const iconContainer = document.createElement("div");
   iconContainer.classList.add("flex", "align-center", "justify-center", "iconContainer");
-  let times = 0;
   
   // KNAPP-CONTAINERN //
   const cancelButton = document.createElement("button");
@@ -209,56 +222,76 @@ export default function testimonials() {
   const buttonContainer = document.createElement("div");
   buttonContainer.classList.add("flex", "flex-row", "justify-center");
   buttonContainer.append(submitButton, cancelButton);
-
-  let selectedRating: number = 0;
+  
   // ☆STAR STUFF☆ //
+  let selectedRating: number = 0;
+  let times = 0;
+  // ☆ skapa 5 stjärnor
   while (times < 5) {
     let starEl = document.createElement("span");
     starEl.classList.add("starEl", "starIcon", "text-2xl",  "text-orange-300", "text-shadow-sm/40", "mr-2", "hover:cursor-pointer", "w-[20px]", "text-center");
     starEl.textContent = "☆";
+    // ☆ Få rätt siffra för stjärnan, +1 för att index börjar på 0
     const index = times + 1;
+    // ☆ Gör att stjärnans tooltip visar dess index också
     starEl.setAttribute("title", `Betygsätt ${index}`);
     
     let selected = false;
     
-    // #region Event listeners
-    
     starEl.addEventListener("click", () => {
       selected = !selected;
+      // ☆ Om en stjärna är vald:
       if (selected) {
+        // ☆ Ändra texten till dess index-nummer
         starEl.textContent = `${index}`;
+        // ☆ Lägg till större skugga, ta bort den mindre skuggan
         starEl.classList.remove("text-shadow-sm/40");
         starEl.classList.add("text-shadow-sm/80");
+        // ☆ Index är valt betyg
         selectedRating = index;
       }
+      // ☆ Om en stjärna inte är vald
       else {
+        // ☆ Ändra texten till stjärna
         starEl.textContent = "☆";
         starEl.classList.add("text-shadow-sm/40");
         starEl.classList.remove("text-shadow-sm/80");
+        // ☆ Låt betyg vara noll
         selectedRating = 0;
       };
     });
     
+    // ☆ När musen är över en stjärna:
     starEl.addEventListener("mouseenter", () => {
+      // ☆ Om stjärnan inte är vald/klickad på:
       if (!selected) {
+        // ☆ Visa index-nummer
         starEl.textContent = `${index}`;
       }
     });
     
+    // ☆ När musen lämnar en stjärna:
     starEl.addEventListener("mouseleave", () => {
+      // ☆ Om stärnan inte är vald/klickad på:
       if (!selected) {
+        // ☆ Visa stjärna igen
         starEl.textContent = "☆";
       }
     });
     
+    // ☆ Lägg till stärnor och dess label i ratingContainer
     ratingContainer.append(starLabel, iconContainer);
     
+    // ☆ Vid klick på Avbryt-knappen:
     cancelButton.addEventListener("click", () => {
+      // ☆ Avmarkera och återställ till stjärnor
       selected = false;
       starEl.textContent = "☆";
     })
     
+    // ☆ Lägg till stjärnan i iconContainer
     iconContainer.append(starEl);
+    // ☆ Öka times med en, tills times är 5
     times++
   }
   
@@ -266,13 +299,19 @@ export default function testimonials() {
   modal.append(modalContent);
   testimonials.append(modal);
   
+  // ☆ När något skrivs i inputField:
   inputField.addEventListener("input", () => {
+    // ☆ Om utkast-checkboxen är icheckad:
     if (draftBox.checked) {
+      // ☆ Gör draftText till texten som skrivits
       draftText = inputField.value;
     }
   });
+  
+  // ☆ Lägg till alla containers i formuläret
   form.append(inputField, draftContainer, ratingContainer, nameContainer, buttonContainer);
   
+  // LÄGG TILL OMDÖME-KNAPPEN //
   addReviewButton.addEventListener("click", () => {
     const savedDraft = localStorage.getItem("reviewDraft");
     if (saveDraft && savedDraft) {
@@ -280,7 +319,7 @@ export default function testimonials() {
       inputField.value = draft.text || "";
       inputName.value = draft.name || "";
     } else {
-      // Nollställ input om inget utkast ska användas
+      // ☆ Nollställ input om inget utkast ska användas
       inputField.value = "";
       inputName.value = "";
     }
@@ -288,56 +327,69 @@ export default function testimonials() {
     modal.classList.add("bg-black/25", "w-full", "h-screen", "fixed", "top-0", "left-0")
   });
   
+  // FORM EVENT LISTENER //
+  // ☆ Eventlistener för inskickat formulär
   form.addEventListener("submit", (e) => {
+    // ☆ Stoppa sidan från att ladda om och rensa localStorage
     e.preventDefault();
     
+    // ☆ Formulär-kontroll: kollar om alla obligatoriska fält är ifyllda eller ej
     if (!form.checkValidity()) {
+      // ☆ Om obligatoriska fält inte är ifyllda, visa customValidity-varning för fälten
       form.reportValidity();
       return;
     }
-    
     const name = inputName.value;
     const text = inputField.value;
-
+    
+    // ☆ Skapa ett nytt kort vid inskickat formulär
     const newCard = Card({ name, text, rating: selectedRating || 0 });
     newCard.classList.add("user-review-card");
+    // ☆ Lägg till kortet först i listan av omdömen
     reviewContainer.prepend(newCard);
+    // ☆ Avmarkera checkboxen för utkast efter
     draftBox.checked = false;
-    
+    // ☆ Ta bort utkastet från localStorage
     localStorage.removeItem("reviewDraft")
-    
-    modal.classList.add("hidden"); //modalen försvinner
+    // ☆ Göm modalen igen
+    modal.classList.add("hidden");
   });
   
-  //Cancel button
+  // CANCEL BUTTON //
   cancelButton.addEventListener("click", () => {
-    
+    // ☆ Om utkast-rutan är icheckad:
     if (draftBox.checked) {
+      // ☆ Ta inputen från omdöme- och namnfälten 
       const draft = {
         text: inputField.value,
         name: inputName.value
       };
+      // ☆ Spara utkastet i localStorage
       localStorage.setItem("reviewDraft", JSON.stringify(draft));
-    } else {
+    } 
+    // ☆ Om utkast-rutan inte är icheckad:
+    else {
+      // ☆ Ta bort utkastet från localStorage
       localStorage.removeItem("reviewDraft");
     }
     modal.classList.add("hidden");
   });
   
-  //Clear the state of draft
+  // RENSA STATE-KNAPPEN //
   clearStateButton.addEventListener("click", () => {
+    // ☆ Ta bort utkastet från localStorage
     localStorage.removeItem("reviewDraft")
+    // ☆ Ta bort alla element med classen ".user-review-card"
+    // som läggs till när ett nytt omdöme läggs till
     document.querySelectorAll(".user-review-card").forEach(el => el.remove());
+    // ☆ Avmarkera utkast-checkboxen
     draftBox.checked = false;
     saveDraft = false;
   });
   
   testimonials.append(inputContainer, reviewContainer);
   
-  
   return testimonials;
 }
-
-//#endregion
 
 //#region THE END!
