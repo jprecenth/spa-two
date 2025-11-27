@@ -9,9 +9,28 @@ type BookingSelection = {
 };
 
 export default function generatebook() {
-    // ----------------- let's make some divs --------------------- //
+    // CREATING ALL CONTAINERS //
     const book = document.createElement("div");
-    book.classList.add("book", "flex", "items-center", "flex-col", "bg-light-blue", "p-standard", "rounded-standard", "drop-shadow-standard", "self-center", "w-[90vw]", "max-w-[1200px]", "max-h-[70vh]", "h-[fit-content]", "overflow-y-auto", "overflow-x-hidden", "scrollbar");
+    book.classList.add(
+    "home",
+    "overflow-y-auto",
+    "overflow-x-hidden",
+    
+    "bg-light-blue",
+    "p-standard",
+    "rounded-standard",
+    "drop-shadow-standard",
+    
+    "w-full",
+    "max-w-[1200px]",
+    "scrollbar",
+    "mx-auto",
+
+    "flex",
+    "flex-col",
+    "items-center",
+    "justify-start"
+  );
     book.innerHTML = `<h1 class="font-one text-center pb-1">Välj och boka behandling</h1>`; 
     
     const bookingContainer = document.createElement("div");
@@ -41,9 +60,11 @@ export default function generatebook() {
     const dropDown = document.createElement("select");
     dropDown.classList.add("dropDown", "button", "text-[12px]");
     
-    // ----------------- Sorting --------------------- //
+    // SORTING & FILTERING //
     for (const option of sortOptions) {
+        // ☆ Skapa ett alternativ i dropdown-menyn för varje element i listan
         const optionElement = document.createElement("option");
+        // ☆ Gör alternativets text samma som i listan
         optionElement.textContent = option;
         dropDown.append(optionElement);
     }
@@ -57,40 +78,55 @@ export default function generatebook() {
     
     const boxArray: HTMLButtonElement[] = [];
     for (const type of treatmentTypes) {
+        // ☆ För varje typ av behandling, skapa en knapp i filtreringen
         const typeDiv = document.createElement("button");
         typeDiv.classList.add("typeDiv", "flex", "basis-1/4", "text-center", "py-[3px]", "text-[12px]", "h-[26px]", "items-center", "justify-center", "min-w-[fit-content]");
+        // ☆ Låt knappens namn vara samma som i listan
         typeDiv.textContent = type;
         filterTop.append(typeDiv);
+        // ☆ Lägg till knappen i boxArray
         boxArray.push(typeDiv);
     }
     
     for (let box of boxArray) {
+        // ☆ För varje knapp i arrayen:
         box.addEventListener("click", function() {
+            // ☆ Vid klick, återställ bakgrundsfärgen
             for (let box of boxArray) {
                 box.style.backgroundColor = "";
             };
+            
             const selectedType = box.textContent;
+            // ☆ Filtrera i behandlingarna efter den typen som klickats
             filterTreatments(selectedType);
+            // ☆ Ändra bakgrundsfärg när en typ är markerad
             box.style.backgroundColor = "var(--color-dark-white)";
         });
     };
-    let sortedList = [...treatmentList]
+
+    // ☆ sortedList är treatmentList
+    let sortedList = [...treatmentList];
+    // ☆ Sortera alfabetiskt namnen a till ö
     function aToO() {
         sortedList.sort((a, b) => a.name.localeCompare(b.name));
         checkoutList();
     }
+    // ☆ Sortera alfabetiskt namnen ö till a
     function oToA() {
         sortedList.sort((a, b) => b.name.localeCompare(a.name));
         checkoutList();
     }
+    // ☆ Sortera kostnaden högt till lågt
     function highToLow() {
         sortedList.sort((a : any, b : any) => b.cost-a.cost);
         checkoutList();
     }
+    // ☆ Sortera kostnaden lågt till högt
     function lowToHigh() {
         sortedList.sort((a : any, b: any) => (a.cost-b.cost));
         checkoutList();
     }
+    // ☆ Implementera switch case för klick på sortera-knappen
     sortBtn.addEventListener("click", function() {
         const selectedSort = dropDown.value;
         switch(selectedSort) {
@@ -109,37 +145,46 @@ export default function generatebook() {
         }
     })
     
-    // ----------------- Filtering --------------------- //
     book.append(bookingContainer);  
     const clearBtn = document.createElement("button");
     clearBtn.classList.add("clearBtn", "flex", "basis-1/4", "text-center", "py-2", "shadow-sm/20", "uppercase", "underline", "text-[12px]", "h-[26px]", "items-center", "justify-center", "min-w-[fit-content]");
     clearBtn.textContent = "Rensa filter";
-    // should this also clear any checked boxes???? perhaps 
     filterTop.append(clearBtn);
     
+    // ☆ Filtrera behandlingar
     function filterTreatments(selectedType: string) {
+        // ☆ Hitta alla behandlings-alternativ
         const allBoxes = book.querySelectorAll<HTMLDivElement>(".treatmentBox");
+        // ☆ För varje alternativ;
         allBoxes.forEach((box) => {
+            // ☆ Om behandlingen ingår i flera typer, dela dem 
             const types = box.dataset.type?.split(",");
+            // ☆ Om behandlingens typ är den som valts, gör display till flex & visa den
             if (types?.includes(selectedType)) {
                 box.style.display = "flex";
             }
+            // ☆ Annars ha display none, som gömmer behandlingen
             else {
                 box.style.display = "none";
             }
         })
     }
+
+    // ☆ Vid klick på rensa-knappen:
     clearBtn.addEventListener("click", function() {
+        // ☆ Hitta alla behandlingar
         const allBoxes = document.querySelectorAll<HTMLDivElement>(".treatmentBox");
+        // ☆ För varje behandling, lägg till flex som gör att de visas
         allBoxes.forEach(box => {
             box.style.display = "flex";
         })
+        // ☆ Och återställ bakgrundsfärgen så ingen filtreringsknapp längre är markerad
         for (let box of boxArray) {
             box.style.backgroundColor = "";
         }
     })
     
-    // ------------ Selection & Summary -------------- //
+    // BOKNINGSVAL //
     const treatmentContainer = document.createElement("div");
     treatmentContainer.classList.add("treatmentContainer", "min-w-4/6", "flex", "flex-col");
     
@@ -155,8 +200,7 @@ export default function generatebook() {
     selectedTreatmentContainer.prepend(selectedTreatmentHeader, selectedUl);
     const selectedDateContainer = document.createElement("div");
     selectedDateContainer.classList.add("mb-2", "text-sm", "selectedDateContainer", "mb-[20px]");
-    
-    // element för datum och personalval
+
     const selDateEl = document.createElement("p");
     const selStaffEl = document.createElement("p");
     const hr = document.createElement("hr");
@@ -175,7 +219,7 @@ export default function generatebook() {
         selStaffEl.innerHTML = `<span class="text-base font-bold">Specialist:</span> ${specialistName || ""}`;
     }
     
-    //Lyssnar om något sker i kalender-komponenten
+    // ☆ Lyssnar om något sker i kalender-komponenten
     calendar.addEventListener("booking:change", (e: Event) => {
         const { detail } = e as CustomEvent<BookingSelection>;
         renderSelection(detail);
@@ -197,11 +241,14 @@ export default function generatebook() {
     summaryContainer.append(selectedTreatmentContainer, selectedDateContainer, totalContainer, noCard);
     renderConfirmedPopup();
     
+    // BOKA-KNAPPEN //
+    // ☆ Skapa boka-knappen och dess funktion 
     const cta = createButton({
         label: "Boka",
         variant: "primary",
         onClick: () => {
             const noCardCheckedbox = document.querySelector<HTMLInputElement>(".noCard-check");
+            // ☆ Skapa en variabel för att "betala på plats" inte checkats i
             const noCardChecked = !!noCardCheckedbox?.checked;
             const anyTreatmentChecked = Array.from(document.querySelectorAll<HTMLInputElement>(".treatmentCheck")).some((checkBox => checkBox.checked));
             const { date, specialistName } = currentSelection;
@@ -223,24 +270,28 @@ export default function generatebook() {
             confirmButton?.classList.remove("bg-red-600", "hover:bg-red-700");
             confirmButton?.classList.add("bg-dark-green", "hover:bg-light-green")
             
+            // ☆ Om ingen behandling valts, visa varning
             if (!anyTreatmentChecked) {
                 console.log("Choose at least 1 - You haven't selected a treatment.")
                 confirmHeader.textContent = "Obs!";
                 chosenStaff.textContent = "Du måste välja minst 1 behandling innan du bokar.";
                 confirmButton.textContent = "OK";
             }
+            // ☆ Om inget datum valts, men behandling har valts, visa varning
             else if (!selectedDate && anyTreatmentChecked) {
                 console.log("Choose date - You've selected a treatment but no date.")
                 confirmHeader.textContent = "Obs!";
                 chosenStaff.textContent = "Du måste välja ett datum för att gå vidare.";
                 confirmButton.textContent = "OK";
             }
+            // ☆ Om datum och behandling har valts, men inte "betala kontant"-boxen
             else if (selectedDate && anyTreatmentChecked && !noCardChecked) {
                 console.log("Accept card - Date and treatment are selected but you've not accepted our no card policy")
                 confirmHeader.textContent = "Obs!";
                 chosenStaff.textContent = "Vi godkänner tyvärr inte kortbetalningar - välj att betala på plats för att gå vidare.";
                 confirmButton.textContent = "OK";
             }
+            // ☆ Slutligen om datum, behandling och kontant har valts- visa bokning!
             else if (selectedDate && anyTreatmentChecked && noCardChecked) {
                 console.log("Success, you've booked!")
                 chosenDate.classList.remove("hidden");
@@ -258,6 +309,8 @@ export default function generatebook() {
                 confirmButton.classList.remove("bg-dark-green", "hover:bg-light-green");
                 confirmButton.classList.add("bg-red-600", "hover:bg-red-700");
             }
+            // ☆ Else-case för ifall jag hade missat ett scenario,
+            // vilket jag inte tror att jag har gjort.
             else {
                 console.log("Something's gone terribly awry.")
             }
@@ -267,38 +320,55 @@ export default function generatebook() {
     cta.classList.add("min-w-fit");
     summaryContainer.append(cta);
     
+    // BETALNINGS-SAMMANFATTNING //
     let totalNumber = document.createElement("p");
+    // ☆ Börja med kostnad 0
     let cost = 0;
     totalNumber.textContent = `${cost} :-`;
     totalNumber.classList.add("font-extrabold");
     
+    // ☆ Funktion för visning av vald behandling och kostnad
     function checkoutList() {
         treatmentContainer.textContent = "";
+        // ☆ För varje behandling av behandlingslistan
         for (const treatment of sortedList) {
+            // ☆ Skapa en checkbox
             const treatmentCheck = document.createElement("input");
             treatmentCheck.setAttribute("type", "checkbox");
             treatmentCheck.classList.add("treatmentCheck", "w-[30px]", "ml-[-30px]");
+            // ☆ Skapa en bullet point i valda behandlingar-listan
             const selectedLi = document.createElement("li");
+            // ☆ Eventlistener för ändringar i markering/avmarkering av checkbox
             treatmentCheck.addEventListener("change", function() {
+                // ☆ Om en behandling har valts
                 if (treatmentCheck.checked){
+                    // ☆ Låt kostnaden vara kostnad + behandlingens kostnad
                     cost = Number(cost) + Number(treatment.cost);
+                    // ☆ Visa totala summan med svensk tusenseparator och ":-"
                     totalNumber.textContent = cost.toLocaleString("sv-SE") + ":-";
                     selectedLi.textContent = treatment.name;
+                    // ☆ Lägg till li-elementet med behandlingens namn
                     selectedUl.appendChild(selectedLi);
                 }
+                // ☆ Om en behandling avcheckas
                 else {
+                    // ☆ Låt kostnaden vara kostnaden minus behandlingens kostnad
                     cost = Number(cost) - Number(treatment.cost);
                     totalNumber.textContent = cost.toLocaleString("sv-SE") + ":-";
+                    // ☆ Ta bort li-elementet med behandlingens namn
                     selectedUl.removeChild(selectedLi);
                 }
+                // ☆ Om fler än en behandling har valts, säg "valda behandlingar"
                 if (selectedUl.children.length > 1) {
                     selectedTreatmentHeader.innerHTML = `<b>Valda behandlingar:</b>`;   
                 }
+                // ☆ Om bara en behandling valts, säg "vald behandling"
                 else {
                     selectedTreatmentHeader.innerHTML = `<b>Vald behandling:</b>`;
                 }
             })
             
+            // ☆ Skapa listan på behandlingar
             const treatmentLabel = document.createElement("label");
             treatmentLabel.textContent = treatment.name;
             treatmentLabel.classList.add("treatmentLabel", "font-bold", "flex-1");

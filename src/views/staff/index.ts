@@ -5,20 +5,19 @@ import { staffList } from "../../Lists";
 export default function staffView() {
   const staffPage = document.createElement("main");
   staffPage.classList.add(
-    "flex",
-    "items-center",
-    "flex-col",
-    "bg-light-blue",
-    "rounded-standard",
-    "drop-shadow-standard",
-    "self-center",
-    "w-[90vw]",
-    "max-w-[1200px]",
-    "h-[70vh]",
+    "home",
     "overflow-y-auto",
     "overflow-x-hidden",
+    
+    "bg-light-blue",
+    "p-standard",
+    "rounded-standard",
+    "drop-shadow-standard",
+    
+    "w-full",
+    "max-w-[1200px]",
     "scrollbar",
-    "p-standard"
+    "mx-auto",
   );
   staffPage.innerHTML = `
   <h1 class="font-one text-center">Vår Personal</h1>
