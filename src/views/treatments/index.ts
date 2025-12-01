@@ -12,7 +12,7 @@ export default function treatments() {
     "p-standard",
     "rounded-standard",
     "drop-shadow-standard",
-    
+
     "w-full",
     "max-w-[1200px]",
     "scrollbar",
@@ -35,7 +35,7 @@ export default function treatments() {
   const accordion = document.createElement("article");
   accordion.classList.add("accordion", 'bg-blue-100', 'rounded-md', 'm-2', 'w-full');
   treatments.append(accordion);
-  
+
   treatmentTypes.forEach((type) => {
     const filtered = treatmentList.filter((treatment) => {
       const types = Array.isArray(treatment.type)
@@ -43,14 +43,14 @@ export default function treatments() {
       : [treatment.type];
       return types.includes(type);
     });
-    
+
     if (filtered.length > 0) {
       const accordionItem = AccordionItem({ title: type, items: filtered });
       accordion.append(accordionItem);
     }
   });
-  
-  
-  // i slutändan returneras elementet som skapades med document.createElement("div")
+
+
+ 
   return treatments;
 }
