@@ -49,7 +49,7 @@ export default function testimonials() {
   savedReviews.forEach((review: cardProps) => {
     const card = Card(review);
     card.classList.add("user-review-card");
-    reviewContainer.prepend(card) //lägger till sparade reviews högst upp i reviewContainern
+    reviewContainer.append(card) //lägger till sparade reviews högst upp i reviewContainern 
   });
   
   // SKAPA REVIEW-CARDS //
