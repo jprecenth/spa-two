@@ -71,7 +71,7 @@ export default function generatebook() {
     
     const sortBtn = document.createElement("button");
     sortBtn.textContent = "Sortera";
-    sortBtn.classList.add("text-[12px]"); // "sortBtn", "max-h-fit",
+    sortBtn.classList.add("text-[12px]");
     
     filterBtm.append(dropDown, sortBtn);
     filterContainer.append(filterTop, filterBtm);

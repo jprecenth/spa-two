@@ -29,7 +29,7 @@ const toISO = (d : Date): string => {
 };
 
 const weekday = (d : Date): string => {
-  const names: string[] = ["Söndag","Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"]; // javascript getDay har söndag som index 0 🤪
+  const names: string[] = ["Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"]; // javascript getDay har söndag som index 0 🤪
   return names[d.getDay()];
 };
 
@@ -152,17 +152,6 @@ export default function BookingCalendar(): BookingCalendarElement {
       renderStaff();
       emitChange();
     },
-  });
-
-  // Lyssnar på ändringar från radio-gruppen.
-  // När en av personalen är valt uppdateras `selectedStaffID`
-  // CTA aktiveras bara om både datum och personal är valda
-  root.addEventListener("change", (e) => {
-    const target = e.target as HTMLInputElement | null;
-    if (target && target.name === "spec") {
-      selectedStaffName = target.value;
-      emitChange();
-    }
   });
 
   return root;

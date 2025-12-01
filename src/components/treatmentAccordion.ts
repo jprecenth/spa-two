@@ -59,7 +59,7 @@ export default function AccordionItem( {title, items}:AccordionItemProps ) {
 
     const costP = document.createElement("p");
     const localizedCost = Number(treatment.cost);
-    costP.textContent = `Från ${localizedCost.toLocaleString("sv-SE")} SEK`;
+    costP.textContent = `Från ${localizedCost.toLocaleString("sv-SE")}:-`;
     div.append(nameP, costP);
 
     content.appendChild(div);

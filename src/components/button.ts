@@ -15,14 +15,13 @@ type CreateButtonOptions = {
   labelSecondary?: string | null;
   variant?: ButtonVariant;
   className?: string;
-  onClick?: (event: MouseEvent) => void; //förklara
+  onClick?: (event: MouseEvent) => void;
   toggleOnClick?: boolean;
 };
 
 type ToggleButton = HTMLButtonElement & { //& sammansätter två typer till en. kallas för Intersect
   setVariant: (newVariant: ButtonVariant) => void;
 };
-
 
 export default function createButton({
   label = "Click me",
@@ -81,7 +80,7 @@ export default function createButton({
 
   if (onClick) {
     button.addEventListener("click", onClick);
-  }
+  } // wtfigo
 
   return button;
 }

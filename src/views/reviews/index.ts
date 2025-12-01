@@ -131,8 +131,10 @@ export default function testimonials() {
   // ☆ Wanted behavior: ingen input > ge varning; faktisk input > ingen varning, 
   // eventlistener nollställer customvalidity varning efter något har skrivits
   inputField.addEventListener("input", () => {
-    inputField.setCustomValidity("");
-  })
+    if (inputField.value.trim() !== "") {
+      inputField.setCustomValidity("");
+    }
+  });
   
   // ☆ Samma som inputField-elementet ovan
   const inputName = document.createElement("textarea");
@@ -144,8 +146,10 @@ export default function testimonials() {
   inputName.maxLength = 20;
   inputName.setCustomValidity("Du måste skriva ett namn för att lägga till ett omdöme.");
   inputName.addEventListener("input", () => {
-    inputName.setCustomValidity("");
-  })
+    if (inputName.value.trim() !== "") {
+      inputName.setCustomValidity("");
+    }
+  });
   
   const nameLabel = document.createElement("label");
   nameLabel.classList.add("font-medium");
@@ -160,7 +164,7 @@ export default function testimonials() {
   // UTKAST-CONTAINERN //
   const draftBox = document.createElement("input");
   draftBox.type = "checkbox";
-  draftBox.checked = saveDraft;
+  // draftBox.checked = saveDraft;
   
   const draftLabel = document.createElement("label");
   draftLabel.innerHTML = "Spara utkast:&nbsp;";
@@ -195,6 +199,7 @@ export default function testimonials() {
   
   // KNAPP-CONTAINERN //
   const cancelButton = document.createElement("button");
+  cancelButton.type = "button";
   const submitButton = document.createElement("input");
   submitButton.type = "submit";
   submitButton.value = "Skicka in";
@@ -287,6 +292,8 @@ export default function testimonials() {
       // ☆ Avmarkera och återställ till stjärnor
       selected = false;
       starEl.textContent = "☆";
+      starEl.classList.remove("text-shadow-sm/80");
+      starEl.classList.add("text-shadow-sm/40");
     })
     
     // ☆ Lägg till stjärnan i iconContainer
@@ -332,6 +339,7 @@ export default function testimonials() {
   form.addEventListener("submit", (e) => {
     // ☆ Stoppa sidan från att ladda om och rensa localStorage
     e.preventDefault();
+    console.log("submit");
     
     // ☆ Formulär-kontroll: kollar om alla obligatoriska fält är ifyllda eller ej
     if (!form.checkValidity()) {

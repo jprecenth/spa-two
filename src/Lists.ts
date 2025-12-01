@@ -74,7 +74,7 @@ export const treatmentList: Array<{name: string, cost: string, type: treatmentNa
   {
     name: "Fotmassage",
     cost: "12",
-    type: ["Fotvård"],
+    type: ["Fotvård", "Massage"],
   },
   {
     name: "Amputation",

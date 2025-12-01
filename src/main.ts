@@ -1,8 +1,3 @@
-// import { check } from "prettier";
-//import javascriptLogo from "./javascript.svg";
-//import viteLogo from "/vite.svg";
-// import { setupCounter } from "./counter.js";
-//import about from "./views/about/index.js";
 import './style.css'
 import { makeIcon } from './components/icon.ts'
 import home from './views/home'
