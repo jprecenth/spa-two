@@ -1,14 +1,8 @@
 import { reviews } from "../../Lists.ts";
-import Card from "../../components/reviewcard";
+import Card, { type cardProps } from "../../components/reviewcard";
 
 let draftText = "";
 let saveDraft = false;
-
-interface UserReview {
-  name: string;
-  text: string;
-  rating: 1 | 2 | 3 | 4 | 5;
-}
 
 export default function testimonials() {
   const testimonials = document.createElement("main");
@@ -51,10 +45,11 @@ export default function testimonials() {
   
   // SPARADE OMDÖMEN //
   // ☆ Hämtar reviews från localStorage
-  const savedReviews = JSON.parse(localStorage.getItem("userReviews") || "[]"); 
-  savedReviews.forEach((review: UserReview) => {
+  const savedReviews = JSON.parse(localStorage.getItem("userReviews") || "[]"); //hämta key värdet för userReviews eller en tom sträng
+  savedReviews.forEach((review: cardProps) => {
     const card = Card(review);
     card.classList.add("user-review-card");
+    reviewContainer.prepend(card) //lägger till sparade reviews högst upp i reviewContainern
   });
   
   // SKAPA REVIEW-CARDS //
@@ -349,9 +344,15 @@ export default function testimonials() {
     }
     const name = inputName.value;
     const text = inputField.value;
+    const rating = selectedRating;
+
+    const saveReview = JSON.parse(localStorage.getItem("userReviews") || "[]");
+    const newReview = {name, text, rating};
+    saveReview.unshift(newReview);
+    localStorage.setItem("userReviews", JSON.stringify(saveReview));
     
     // ☆ Skapa ett nytt kort vid inskickat formulär
-    const newCard = Card({ name, text, rating: selectedRating || 0 });
+    const newCard = Card({ name, text, rating: selectedRating});
     newCard.classList.add("user-review-card");
     // ☆ Lägg till kortet först i listan av omdömen
     reviewContainer.prepend(newCard);
@@ -385,10 +386,10 @@ export default function testimonials() {
   
   // RENSA STATE-KNAPPEN //
   clearStateButton.addEventListener("click", () => {
-    // ☆ Ta bort utkastet från localStorage
+    // ☆ Ta bort utkastet och nya reviews från localStorage
     localStorage.removeItem("reviewDraft")
-    // ☆ Ta bort alla element med classen ".user-review-card"
-    // som läggs till när ett nytt omdöme läggs till
+    localStorage.removeItem("userReviews")
+
     document.querySelectorAll(".user-review-card").forEach(el => el.remove());
     // ☆ Avmarkera utkast-checkboxen
     draftBox.checked = false;
