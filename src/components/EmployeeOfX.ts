@@ -68,7 +68,7 @@ employees.forEach((emp) => {
   const img = document.createElement("img");
   img.src = String(emp.src);
   img.alt = `Bild på ${chosenEmployee}`;
-  img.classList.add("w-32", "h-32", "rounded-full", "object-cover", "mb-3", "bg-dark-orange", "p-2", "hover:bg-light-blue");
+  img.classList.add("w-52", "h-52", "rounded-full", "object-cover", "mb-3", "bg-dark-orange", "p-2", "hover:bg-light-blue");
   
   const title = document.createElement("h3");
   title.textContent = emp.title;
