@@ -346,9 +346,9 @@ export default function testimonials() {
     const text = inputField.value;
     const rating = selectedRating;
 
-    const saveReview = JSON.parse(localStorage.getItem("userReviews") || "[]");
+    const saveReview = JSON.parse(localStorage.getItem("userReviews") || "[]"); //måste först läsa in datan från userReviews för att inte skriva över arrayen
     const newReview = {name, text, rating};
-    saveReview.unshift(newReview);
+    saveReview.unshift(newReview); // lägger till nya reviews först i arrayen
     localStorage.setItem("userReviews", JSON.stringify(saveReview));
     
     // ☆ Skapa ett nytt kort vid inskickat formulär
