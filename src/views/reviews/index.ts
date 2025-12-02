@@ -46,11 +46,11 @@ export default function testimonials() {
   // SPARADE OMDÖMEN //
   // ☆ Hämtar reviews från localStorage
   const savedReviews = JSON.parse(localStorage.getItem("userReviews") || "[]"); //hämta key värdet för userReviews eller en tom sträng
-  savedReviews.forEach((review: cardProps) => {
+  for (const review of savedReviews as cardProps[]){
     const card = Card(review);
     card.classList.add("user-review-card");
-    reviewContainer.append(card) //lägger till sparade reviews högst upp i reviewContainern 
-  });
+    reviewContainer.append(card); //lägger till sparade reviews högst upp i reviewContainern 
+  }
   
   // SKAPA REVIEW-CARDS //
   // ☆ Skapa kort för omdömen i reviews-arrayen, men bara 9 stycken
@@ -390,7 +390,10 @@ export default function testimonials() {
     localStorage.removeItem("reviewDraft")
     localStorage.removeItem("userReviews")
 
-    document.querySelectorAll(".user-review-card").forEach(el => el.remove());
+    //ta bort elementen som läggs till i html strukturen temporärt
+    for (const element of document.querySelectorAll(".user-review-card")){
+    element.remove()
+    }
     // ☆ Avmarkera utkast-checkboxen
     draftBox.checked = false;
     saveDraft = false;
