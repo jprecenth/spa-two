@@ -27,7 +27,7 @@ export function cancelAction() {
   console.log("Avbrutet!");
   closePopup();
 }
-declare global {
+declare global { //måste deklarera dessa global för att hmtl strukturen ska kunna använda dessa vid OnClick i Ts
   interface Window {
     showPopup: typeof showPopup;
     closePopup: typeof closePopup;

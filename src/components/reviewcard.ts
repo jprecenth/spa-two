@@ -62,7 +62,7 @@ function createStars(rating: number) {
     return stars
 }
 
-interface cardProps {
+export interface cardProps {
     rating: number
     text: string
     name: string
